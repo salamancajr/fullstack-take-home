@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Fragment } from 'react'
 import WallEImg from './images/wall-e.png'
 import { Plateau } from './components'
 import axiosClient from './axiosClient'
@@ -19,9 +19,10 @@ function App() {
     roverMovementInstruction: '',
   })
 
-  const [isLoading, updateIsLoading] = useState(true)
+  const [isLoading, updateIsLoading] = useState(false)
 
-  useEffect(() => {
+  const requestInstructions = () => {
+    updateIsLoading(true)
     axiosClient
       .get('/instructions')
       .then(({ data }) => {
@@ -29,12 +30,15 @@ function App() {
         updateIsLoading(false)
       })
       .catch(console.log)
-  }, [])
+  }
 
   return (
     <Container className="App">
       <img src={WallEImg} height="200" alt="wall-e robot" />
       <h1>MARS ROVER</h1>
+      <button style={{ marginBottom: 15 }} onClick={requestInstructions}>
+        Request Instructions
+      </button>
       {!isLoading ? (
         <Plateau {...data} />
       ) : (

@@ -1,10 +1,9 @@
-import React from 'react'
-import { Fragment } from 'react/cjs/react.production.min'
+import React, { Fragment } from 'react'
 import styled from 'styled-components'
 import { GridElement } from './GridElement.js'
 
 const PlateauArea = styled.div`
-  width: 50vw;
+  width: 30vw;
   display: flex;
 `
 
@@ -24,6 +23,16 @@ export class Plateau extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (prevProps !== this.props) {
+      this.setState({
+        direction: this.props.roverPosition.direction,
+        roverX: this.props.roverPosition.x,
+        roverY: this.props.roverPosition.y,
+        isDone: false,
+        instructionIndex: 0,
+      })
+    }
+
     const { instructionIndex } = this.state
     if (prevState.instructionIndex !== instructionIndex) {
       this.handleInstructionChange()
@@ -123,31 +132,33 @@ export class Plateau extends React.Component {
       plateauSize: { width, height },
     } = this.props
     const { roverX, roverY, isDone } = this.state
-    const gridElementSize = 50 / height
-
-    console.log({ isDone })
+    const gridElementSize = 30 / height
 
     return (
       <Fragment>
+        <div style={{ height: '2rem' }}>
+          {isDone && (
+            <h3
+              style={{ marginTop: 0 }}
+            >{`Final coordinates of the rover are X: ${roverX} and Y: ${roverY}`}</h3>
+          )}
+        </div>
         <PlateauArea>
-          {new Array(height).fill().map((_, x) => (
+          {new Array(width).fill().map((_, x) => (
             <HorizontalContainer
               key={x}
               style={{ width: gridElementSize + 'vw' }}
             >
-              {new Array(width).fill().map((_, y) => (
+              {new Array(height).fill().map((_, y) => (
                 <GridElement
                   key={y}
-                  {...{ gridElementSize, y: width - (y + 1), x }}
+                  {...{ gridElementSize, y: height - (y + 1), x }}
                   roverPosition={{ x: roverX, y: roverY }}
                 />
               ))}
             </HorizontalContainer>
           ))}
         </PlateauArea>
-        {isDone && (
-          <h2>{`Final coordinates of the rover are X: ${roverX} and Y: ${roverY}`}</h2>
-        )}
       </Fragment>
     )
   }

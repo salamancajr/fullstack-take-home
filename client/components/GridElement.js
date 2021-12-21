@@ -7,7 +7,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 5px solid white;
+  border: 1px solid white;
   background-color: orange;
 `
 
