@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { GridElement } from './GridElement.js'
 
 const PlateauArea = styled.div`
-  width: 30vw;
   display: flex;
 `
 
@@ -24,10 +23,11 @@ export class Plateau extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps !== this.props) {
+      const { roverPosition } = this.props
       this.setState({
-        direction: this.props.roverPosition.direction,
-        roverX: this.props.roverPosition.x,
-        roverY: this.props.roverPosition.y,
+        direction: roverPosition.direction,
+        roverX: roverPosition.x,
+        roverY: roverPosition.y,
         isDone: false,
         instructionIndex: 0,
       })

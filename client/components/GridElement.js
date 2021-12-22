@@ -14,7 +14,7 @@ const Container = styled.div`
 export const GridElement = ({ gridElementSize, x, y, roverPosition }) => {
   const isCurrentPosition = x === roverPosition.x && y === roverPosition.y
   return (
-    <Container {...{ gridElementSize }}>
+    <Container {...{ gridElementSize }} data-testid="grid-element">
       {isCurrentPosition && <img src={WallEImg} height={gridElementSize * 5} />}
     </Container>
   )

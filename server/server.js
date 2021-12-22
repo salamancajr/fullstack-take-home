@@ -1,13 +1,9 @@
 const bodyParser = require('body-parser')
-const readline = require('readline')
 const express = require('express')
+const question = require('./readLineUtil')
 
 const app = express()
 const port = 8081
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-})
 
 // Middleware
 app.use(bodyParser.json())
@@ -21,12 +17,6 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type')
   next()
 })
-
-function question(query) {
-  return new Promise(resolve => {
-    rl.question(query, resolve)
-  })
-}
 
 app.get('/api/instructions', async (req, res) => {
   const width = await question('What is the plateau size (width)? ')
@@ -49,6 +39,8 @@ app.get('/api/instructions', async (req, res) => {
   })
 })
 
-app.listen({ port }, () => {
+const server = app.listen({ port }, () => {
   console.log(`Course server running at http://localhost:${port}`)
 })
+
+module.exports = server
